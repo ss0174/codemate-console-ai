@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { TerminalOutput } from '@/types/terminal';
 import { terminalCommands } from '@/lib/terminalCommands';
+import { aiParser } from '@/lib/aiParser';
 
 export const useTerminal = () => {
   const [outputs, setOutputs] = useState<TerminalOutput[]>([]);
@@ -24,18 +25,30 @@ export const useTerminal = () => {
   const executeCommand = useCallback(async (command: string) => {
     if (!command.trim()) return;
 
-    // Add to history
+    // Parse natural language commands
+    const parsedCommand = aiParser.parseCommand(command);
+    const isNaturalLanguage = aiParser.isNaturalLanguage(command);
+    
+    // Add to history (original command)
     setCommandHistory(prev => [...prev, command]);
     setHistoryIndex(-1);
 
     try {
-      const result = await terminalCommands.execute(command, currentPath);
+      // Show natural language interpretation if different
+      if (isNaturalLanguage && parsedCommand !== command) {
+        addOutput(command, `Interpreting as: ${parsedCommand}`, 'info');
+      }
+
+      const result = await terminalCommands.execute(parsedCommand, currentPath);
       
       if (result.newPath) {
         setCurrentPath(result.newPath);
       }
       
-      addOutput(command, result.output, result.type);
+      // Only show command output if there's actual output
+      if (result.output) {
+        addOutput(isNaturalLanguage ? parsedCommand : command, result.output, result.type);
+      }
     } catch (error) {
       addOutput(command, `Error: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     }
@@ -72,9 +85,24 @@ export const useTerminal = () => {
 
   // Welcome message
   useEffect(() => {
-    addOutput('', `CodeMate Terminal Emulator v1.0
-Type 'help' to see available commands.
-Current directory: ${currentPath}`, 'info');
+    addOutput('', `🚀 CodeMate Terminal Emulator v2.0 - Hackathon Edition
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ Features:
+• Full command execution (ls, cd, pwd, mkdir, rm, ps, cpu, mem)
+• Natural language support: "create folder test" or "show files"
+• Command history (↑/↓ arrows) and tab completion
+• Real-time system monitoring
+• Safe command execution with security checks
+
+📍 Current directory: ${currentPath}
+💡 Type 'help' for commands or try natural language!
+
+Examples:
+→ show files
+→ create folder myproject  
+→ go to Documents
+→ show cpu usage`, 'info');
   }, []);
 
   return {

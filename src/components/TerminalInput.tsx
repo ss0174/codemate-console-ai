@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { aiParser } from '@/lib/aiParser';
 
 interface TerminalInputProps {
   currentPath: string;
@@ -29,7 +30,17 @@ export const TerminalInput: React.FC<TerminalInputProps> = ({
   useEffect(() => {
     // Update suggestions when input changes
     if (input.trim()) {
-      const newSuggestions = getAutocompleteSuggestions(input);
+      let newSuggestions = getAutocompleteSuggestions(input);
+      
+      // Add AI/NLP suggestions for natural language
+      if (aiParser.isNaturalLanguage(input)) {
+        const aiSuggestions = aiParser.getSuggestions(input);
+        newSuggestions = [...newSuggestions, ...aiSuggestions];
+      }
+      
+      // Remove duplicates and limit to 5
+      newSuggestions = [...new Set(newSuggestions)].slice(0, 5);
+      
       setSuggestions(newSuggestions);
       setShowSuggestions(newSuggestions.length > 0);
       setSelectedSuggestion(0);
@@ -105,23 +116,24 @@ export const TerminalInput: React.FC<TerminalInputProps> = ({
   return (
     <div className="relative">
       <div className="flex items-center" onClick={handleClick}>
-        <span className="text-terminal-prompt terminal-glow">user@codemate</span>
+        <span className="text-terminal-prompt terminal-glow font-semibold">user@codemate</span>
         <span className="text-terminal-text-dim mx-1">:</span>
-        <span className="text-terminal-path">{getDisplayPath(currentPath)}</span>
-        <span className="text-terminal-prompt mx-1">$</span>
+        <span className="text-terminal-path font-medium">{getDisplayPath(currentPath)}</span>
+        <span className="text-terminal-prompt mx-1 font-bold">$</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent border-none outline-none text-terminal-text caret-terminal-cursor"
+          className="flex-1 bg-transparent border-none outline-none text-terminal-text caret-terminal-cursor font-mono"
+          placeholder="Type a command or natural language..."
           autoComplete="off"
           autoCapitalize="off"
           autoCorrect="off"
           spellCheck="false"
         />
-        <span className="terminal-cursor text-terminal-cursor">█</span>
+        <span className="terminal-cursor text-terminal-cursor font-mono">█</span>
       </div>
 
       {/* Autocomplete suggestions */}

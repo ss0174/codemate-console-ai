@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTerminal } from '@/hooks/useTerminal';
 import { TerminalOutput } from './TerminalOutput';
 import { TerminalInput } from './TerminalInput';
+import { DarkModeToggle } from './DarkModeToggle';
 
 export const Terminal = () => {
   const {
@@ -32,10 +33,16 @@ export const Terminal = () => {
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
           </div>
-          <span className="text-terminal-text-dim text-sm">CodeMate Terminal</span>
+          <span className="text-terminal-text-dim text-sm font-semibold">CodeMate Terminal v2.0</span>
+          <span className="text-terminal-success text-xs px-2 py-1 rounded bg-terminal-border">
+            🏆 Hackathon Edition
+          </span>
         </div>
-        <div className="text-terminal-path text-sm">
-          {currentPath}
+        <div className="flex items-center space-x-3">
+          <div className="text-terminal-path text-sm">
+            {currentPath}
+          </div>
+          <DarkModeToggle />
         </div>
       </div>
 

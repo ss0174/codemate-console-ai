@@ -29,11 +29,11 @@ export const TerminalOutput: React.FC<TerminalOutputProps> = ({ output }) => {
     <div className="mb-2">
       {output.command && (
         <div className="flex items-center mb-1">
-          <span className="text-terminal-prompt terminal-glow">user@codemate</span>
+          <span className="text-terminal-prompt terminal-glow font-semibold">user@codemate</span>
           <span className="text-terminal-text-dim mx-1">:</span>
-          <span className="text-terminal-path">~{output.command.startsWith('/') ? '' : '/'}</span>
-          <span className="text-terminal-prompt mx-1">$</span>
-          <span className="text-terminal-text">{output.command}</span>
+          <span className="text-terminal-path font-medium">~{output.command.startsWith('/') ? '' : '/'}</span>
+          <span className="text-terminal-prompt mx-1 font-bold">$</span>
+          <span className="text-terminal-text font-mono">{output.command}</span>
         </div>
       )}
       {output.output && (

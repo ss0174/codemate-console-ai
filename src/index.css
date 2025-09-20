@@ -55,6 +55,56 @@
 
     --radius: 0.375rem;
   }
+
+  /* Light Mode Theme */
+  .light {
+    /* Terminal Light Theme */
+    --terminal-bg: 250 50% 96%;
+    --terminal-surface: 250 50% 98%;
+    --terminal-border: 220 13% 85%;
+    
+    /* Terminal Text Colors */
+    --terminal-text: 220 13% 18%;
+    --terminal-text-dim: 220 13% 45%;
+    --terminal-prompt: 200 80% 45%;
+    --terminal-path: 250 80% 35%;
+    --terminal-error: 0 84% 45%;
+    --terminal-success: 120 80% 35%;
+    --terminal-warning: 45 90% 45%;
+    
+    /* Terminal Effects */
+    --terminal-glow: 200 80% 45%;
+    --terminal-cursor: 220 13% 18%;
+    
+    /* Standard Theme */
+    --background: 250 50% 96%;
+    --foreground: 220 13% 18%;
+
+    --card: 250 50% 98%;
+    --card-foreground: 220 13% 18%;
+
+    --popover: 250 50% 98%;
+    --popover-foreground: 220 13% 18%;
+
+    --primary: 200 80% 45%;
+    --primary-foreground: 250 50% 98%;
+
+    --secondary: 220 13% 85%;
+    --secondary-foreground: 220 13% 18%;
+
+    --muted: 220 13% 90%;
+    --muted-foreground: 220 13% 45%;
+
+    --accent: 250 80% 35%;
+    --accent-foreground: 250 50% 98%;
+
+    --destructive: 0 84% 45%;
+    --destructive-foreground: 250 50% 98%;
+
+    --border: 220 13% 85%;
+    --input: 220 13% 90%;
+    --ring: 200 80% 45%;
+  }
 }
 
 /* Terminal-specific styles */
